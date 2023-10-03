@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD con Bootstrap y Axios</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">CRUD con Bootstrap y Axios</h2>
+
+    <!-- Botón CREAR -->
+    <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#articuloModal">Crear Artículo</button>
+
+    <!-- Tabla de Artículos -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Descripción</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="articulos">
+            <!-- Aquí se mostrarán los artículos -->
+        </tbody>
+    </table>
+
+    <!-- Modal para Crear/Editar Artículo -->
+    <div class="modal fade" id="articuloModal" tabindex="-1" role="dialog" aria-labelledby="articuloModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="articuloModalLabel">Artículo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="articuloForm">
+                        <input type="hidden" id="articuloId">
+                        <div class="form-group">
+                            <label for="descripcion">Descripción:</label>
+                            <input type="text" class="form-control" id="descripcion" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="precio">Precio:</label>
+                            <input type="number" class="form-control" id="precio" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="stock">Stock:</label>
+                            <input type="number" class="form-control" id="stock" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="guardarArticulo">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+    const url = 'http://localhost:8000/api/books/';
+    const articuloForm = document.getElementById('articuloForm');
+    const articuloId = document.getElementById('articuloId');
+    const descripcion = document.getElementById('descripcion');
+    const precio = document.getElementById('precio');
+    const stock = document.getElementById('stock');
+    const guardarArticulo = document.getElementById('guardarArticulo');
+
+    const cargarArticulos = () => {
+        axios.get(url)
+            .then(response => {
+                const articulos = response.data;
+                const articulosHtml = articulos.map(articulo => `
+                    <tr>
+                        <td>${articulo.id}</td>
+                        <td>${articulo.descripcion}</td>
+                        <td>${articulo.precio}</td>
+                        <td>${articulo.stock}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning" onclick="editarArticulo(${articulo.id}, '${articulo.descripcion}', ${articulo.precio}, ${articulo.stock})">Editar</button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarArticulo(${articulo.id})">Eliminar</button>
+                        </td>
+                    </tr>
+                `).join('');
+                document.getElementById('articulos').innerHTML = articulosHtml;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    };
+
+    const limpiarFormulario = () => {
+        articuloId.value = '';
+        descripcion.value = '';
+        precio.value = '';
+        stock.value = '';
+    };
+
+    const editarArticulo = (id, desc, prec, st) => {
+        articuloId.value = id;
+        descripcion.value = desc;
+        precio.value = prec;
+        stock.value = st;
+        $('#articuloModal').modal('show');
+    };
+
+    const eliminarArticulo = (id) => {
+        if (confirm('¿Confirma eliminar el registro?')) {
+            axios.delete(url + id)
+                .then(response => {
+                    cargarArticulos();
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    };
+
+    guardarArticulo.addEventListener('click', () => {
+        if (articuloId.value === '') {
+            // Crear nuevo artículo
+            const nuevoArticulo = {
+                descripcion: descripcion.value,
+                precio: parseFloat(precio.value),
+                stock: parseInt(stock.value)
+            };
+            axios.post(url, nuevoArticulo)
+                .then(response => {
+                    cargarArticulos();
+                    $('#articuloModal').modal('hide');
+                    limpiarFormulario();
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        } else {
+            // Editar artículo existente
+            const articuloEditado = {
+                id: parseInt(articuloId.value),
+                descripcion: descripcion.value,
+                precio: parseFloat(precio.value),
+                stock: parseInt(stock.value)
+            };
+            axios.put(url + articuloId.value, articuloEditado)
+                .then(response => {
+                    cargarArticulos();
+                    $('#articuloModal').modal('hide');
+                    limpiarFormulario();
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    });
+
+    cargarArticulos();
+</script>
+
+</body>
+</html>
