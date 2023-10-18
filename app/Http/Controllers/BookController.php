@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 * @OA\Info(
 *             title="API Books", 
 *             version="1.0",
-*             description="Mostando la Lista de URI's de mi API"
+*             description="Requisitos para Ejecutar la API Laravel 10: PHP 8 o Superior: Asegúrate de tener PHP versión 8.0 o superior instalado en tu sistema. Puedes verificar la versión de PHP ejecutando php -v. Composer: Instala Composer, una herramienta esencial para gestionar las dependencias de Laravel. Puedes descargar Composer desde getcomposer.org. Base de Datos MySQL:  Esta API Laravel utiliza MySQL como base de datos. Debes tener una instancia de MySQL configurada y accesible. Asegúrate de tener los detalles de conexión a la base de datos, como la dirección, el nombre de usuario y la contraseña."
 * )
 *
 * @OA\Server(url="http://localhost:8000/")
@@ -84,7 +84,7 @@ class BookController extends Controller
     }
 
         /**
-     * Registrar la información de un Book
+     * Registrar la información de un nuevo Book
      * @OA\Post (
      *     path="/api/books",
      *     tags={"Book"},
@@ -279,7 +279,7 @@ class BookController extends Controller
 }
 
     /**
-     * Eliminar la información de un book
+     * Eliminar un book
      * @OA\Delete (
      *     path="/api/books/{id}",
      *     tags={"Book"},

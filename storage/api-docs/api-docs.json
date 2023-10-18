@@ -2,7 +2,7 @@
     "openapi": "3.0.0",
     "info": {
         "title": "API Books",
-        "description": "Mostando la Lista de URI's de mi API",
+        "description": "Requisitos para Ejecutar la API Laravel 10: PHP 8 o Superior: Asegúrate de tener PHP versión 8.0 o superior instalado en tu sistema. Puedes verificar la versión de PHP ejecutando php -v. Composer: Instala Composer, una herramienta esencial para gestionar las dependencias de Laravel. Puedes descargar Composer desde getcomposer.org. Base de Datos MySQL:  Esta API Laravel utiliza MySQL como base de datos. Debes tener una instancia de MySQL configurada y accesible. Asegúrate de tener los detalles de conexión a la base de datos, como la dirección, el nombre de usuario y la contraseña.",
         "version": "1.0"
     },
     "servers": [
@@ -77,7 +77,7 @@
                 "tags": [
                     "Book"
                 ],
-                "summary": "Registrar la información de un Book",
+                "summary": "Registrar la información de un nuevo Book",
                 "operationId": "47047e95a700b3271b697e57d0965191",
                 "requestBody": {
                     "content": {
@@ -338,7 +338,7 @@
                 "tags": [
                     "Book"
                 ],
-                "summary": "Eliminar la información de un book",
+                "summary": "Eliminar un book",
                 "operationId": "1a9c26667c32b8ed5e5770d7a1cc9d5c",
                 "parameters": [
                     {
