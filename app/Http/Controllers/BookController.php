@@ -142,19 +142,19 @@ class BookController extends Controller
      * )
      */
     public function store(Request $request)
-    {
-        $book = new Book();
-        $book->title = $request->title;
-        $book->author = $request->author;
-        $book->gender = $request->gender;
-        $book->synopsis = $request->synopsis;
-        $book->any_publication = $request->any_publication;
-     
+{
+    $book = new Book();
+    $book->title = $request->title;
+    $book->author = $request->author;
+    $book->gender = $request->gender;
+    $book->synopsis = $request->synopsis;
+    $book->any_publication = $request->any_publication;
+    $book->save();
 
-        $book->save();
+    // Retornar una redirección con un mensaje de éxito
+    return redirect('/api/books')->with('success', 'Libro creado correctamente');
+}
 
-        return $book;
-    }
 
     /**
      * Mostrar la información de un book

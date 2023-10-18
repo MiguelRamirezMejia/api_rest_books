@@ -18,6 +18,7 @@
         <a href="http://localhost:8000/api/documentation" target="_blank" class="ml-auto">DOCUMENTACIÓN</a>
     </div>
     
+    <div id="successMessage" class="alert alert-success" style="display: none;"></div>
 
     <!-- Tabla de Books -->
     <table class="table">
@@ -129,6 +130,8 @@
     const synopsis = document.getElementById('synopsis');
     const any_publication = document.getElementById('any_publication');
     const guardarBook = document.getElementById('guardarBook');
+    const guardarBooks = document.getElementById('guardarBook');
+    const successMessage = document.getElementById('successMessage');
 
     const cargarBooks = () => {
         axios.get(url)
@@ -188,46 +191,66 @@
         }
     };
 
-    guardarBook.addEventListener('click', () => {
-        if (bookId.value === '') {
-            // Crear nuevo book
-            const nuevoBook = {
-                title: title.value,
-                author: author.value,
-                gender: gender.value,
-                synopsis: synopsis.value,
-                any_publication: parseInt(any_publication.value)
-            };
-            axios.post(url, nuevoBook)
-                .then(response => {
-                    cargarBooks();
-                    $('#bookModal').modal('hide');
-                    limpiarFormulario();
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        } else {
-            // Editar book existente
-            const bookEditado = {
-                id: parseInt(bookId.value),
-                title: title.value,
-                author: author.value,
-                gender: gender.value,
-                synopsis: synopsis.value,
-                any_publication: parseInt(any_publication.value)
-            };
-            axios.put(url + bookId.value, bookEditado)
-                .then(response => {
-                    cargarBooks();
-                    $('#bookModal').modal('hide');
-                    limpiarFormulario();
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        }
-    });
+
+
+guardarBook.addEventListener('click', () => {
+    if (bookId.value === '') {
+        // Crear nuevo book
+        const nuevoBooks = {
+            title: title.value,
+            author: author.value,
+            gender: gender.value,
+            synopsis: synopsis.value,
+            any_publication: parseInt(any_publication.value)
+        };
+        axios.post(url, nuevoBooks)
+            .then(response => {
+                cargarBooks();
+                $('#bookModal').modal('hide');
+                limpiarFormulario();
+
+                // Mostrar mensaje de éxito
+                successMessage.style.display = 'block';
+                successMessage.innerText = 'Libro creado correctamente';
+
+                // Ocultar el mensaje después de unos segundos
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 3000);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    } else {
+        // Editar book existente
+        const bookEditado = {
+            id: parseInt(bookId.value),
+            title: title.value,
+            author: author.value,
+            gender: gender.value,
+            synopsis: synopsis.value,
+            any_publication: parseInt(any_publication.value)
+        };
+        axios.put(url + bookId.value, bookEditado)
+            .then(response => {
+                cargarBooks();
+                $('#bookModal').modal('hide');
+                limpiarFormulario();
+
+                // Mostrar mensaje de éxito
+                successMessage.style.display = 'block';
+                successMessage.innerText = 'Libro editado correctamente';
+
+                // Ocultar el mensaje después de unos segundos
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 3000);
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    }
+});
 
     cargarBooks();
 
