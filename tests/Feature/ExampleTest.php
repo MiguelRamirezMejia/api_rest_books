@@ -2,12 +2,8 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
-use App\Models\Book; // Asegúrate de importar la clase Book
-use Illuminate\Database\Eloquent\Factories\Factory; // Asegúrate de importar la clase Factory
-
+use App\Models\Book;
 
 class ExampleTest extends TestCase
 {
@@ -52,31 +48,16 @@ class ExampleTest extends TestCase
 
     public function testPuedeActualizarUnBook()
     {
-        $book = new Book([
-            'title' => 'Nuevo título',
-            'author' => 'Nuevo autor',
-            'gender' => 'Género',
-            'synopsis' => 'Descripción',
-            'any_publication' => 2023,
-        ]);
-    
-        $book->save();
-    
+        $book = Book::factory()->create();
         $updatedData = [
-            'title' => 'Título actualizado',
-            'author' => 'Autor actualizado',
-            'gender' => 'Género actualizado',
-            'synopsis' => 'Descripción actualizada',
-            'any_publication' => 2023,
+            "title" => "Título actualizado",
+            "author" => "Autor actualizado",
         ];
-    
+
         $response = $this->put('/api/books/' . $book->id, $updatedData);
-    
         $response->assertStatus(200);
         $response->assertJson($updatedData);
     }
-    
-    
 
     public function testPuedeEliminarUnBook()
     {
