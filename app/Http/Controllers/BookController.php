@@ -259,16 +259,24 @@ class BookController extends Controller
      * )
      */
     public function update(Request $request, Book $book)
-    {
-        $book->title = $request->title;
-        $book->author = $request->author;
-        $book->gender = $request->gender;
-        $book->synopsis = $request->synopsis;
-        $book->any_publication = $request->any_publication;
-        $book->update();
+{
+    $request->validate([
+        'title' => 'required',
+        'author' => 'required',
+        'gender' => 'required',  // Asegúrate de que 'gender' sea requerido
+        'synopsis' => 'required',
+        'any_publication' => 'required',
+    ]);
 
-        return $book;
-    }
+    $book->title = $request->title;
+    $book->author = $request->author;
+    $book->gender = $request->gender;
+    $book->synopsis = $request->synopsis;
+    $book->any_publication = $request->any_publication;
+    $book->update();
+
+    return $book;
+}
 
     /**
      * Eliminar la información de un book
