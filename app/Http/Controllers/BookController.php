@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 *             description="Mostando la Lista de URI's de mi API"
 * )
 *
-* @OA\Server(url="http://localhost/api_rest_books/")
+* @OA\Server(url="http://localhost:8000/")
 */
 class BookController extends Controller
 {

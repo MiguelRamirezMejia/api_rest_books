@@ -7,7 +7,7 @@
     },
     "servers": [
         {
-            "url": "http://localhost/api_oficial/"
+            "url": "http://localhost:8000/"
         }
     ],
     "paths": {
