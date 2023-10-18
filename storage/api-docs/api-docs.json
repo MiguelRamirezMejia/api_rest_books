@@ -1,0 +1,377 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Books",
+        "description": "Mostando la Lista de URI's de mi API",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost/api_oficial/"
+        }
+    ],
+    "paths": {
+        "/api/books": {
+            "get": {
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Mostrar Lista de Books",
+                "operationId": "a9d13283dfab262e97af3c914d51b7a8",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "rows": {
+                                            "type": "array",
+                                            "items": {
+                                                "properties": {
+                                                    "id": {
+                                                        "type": "number",
+                                                        "example": "1"
+                                                    },
+                                                    "title": {
+                                                        "type": "string",
+                                                        "example": "100 años de Soledad"
+                                                    },
+                                                    "author": {
+                                                        "type": "string",
+                                                        "example": "Gabriel García Marquez"
+                                                    },
+                                                    "gender": {
+                                                        "type": "string",
+                                                        "example": "Novela"
+                                                    },
+                                                    "Synopsis": {
+                                                        "type": "string",
+                                                        "example": "Cien años de soledad es una obra maestra de la literatura escrita por Gabriel García Márquez. La novela narra la historia de la familia Buendía a lo largo de varias generaciones en el pueblo ficticio de Macondo. Combina elementos de realismo mágico con una narrativa envolvente para explorar temas de amor, soledad, poder y destino. A lo largo de la historia, los personajes enfrentan desafíos extraordinarios en un mundo donde lo cotidiano y lo sobrenatural se entrelazan. La obra es un viaje a través del tiempo y la memoria de una familia, una comunidad y un continente, y es considerada una de las obras más influyentes de la literatura en español del siglo XX."
+                                                    },
+                                                    "any_publication": {
+                                                        "type": "string",
+                                                        "example": "1967"
+                                                    },
+                                                    "create_at": {
+                                                        "type": "string",
+                                                        "example": "2023-10-18 14:19:40"
+                                                    },
+                                                    "update_at": {
+                                                        "type": "string",
+                                                        "example": "2023-10-18 14:19:40"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Registrar la información de un Book",
+                "operationId": "47047e95a700b3271b697e57d0965191",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "": {
+                                        "properties": {
+                                            "title": {
+                                                "type": "string"
+                                            },
+                                            "author": {
+                                                "type": "string"
+                                            },
+                                            "gender": {
+                                                "type": "string"
+                                            },
+                                            "synopsis": {
+                                                "type": "string"
+                                            },
+                                            "any_publication": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "title": "100 años de Soledad",
+                                    "author": "Gabriel García Márquez",
+                                    "gender": "Novela",
+                                    "synopsis": "Cien años de soledad es una obra maestra de la literatura escrita por Gabriel García Márquez. La novela narra la historia de la familia Buendía a lo largo de varias generaciones en el pueblo ficticio de Macondo. Combina elementos de realismo mágico con una narrativa envolvente para explorar temas de amor, soledad, poder y destino. A lo largo de la historia, los personajes enfrentan desafíos extraordinarios en un mundo donde lo cotidiano y lo sobrenatural se entrelazan. La obra es un viaje a través del tiempo y la memoria de una familia, una comunidad y un continente, y es considerada una de las obras más influyentes de la literatura en español del siglo XX.",
+                                    "any_publication": "1967"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "CREATED",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 1
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "100 años de Soledad"
+                                        },
+                                        "author": {
+                                            "type": "string",
+                                            "example": "Gabriel García Márquez"
+                                        },
+                                        "gender": {
+                                            "type": "string",
+                                            "example": "Novela"
+                                        },
+                                        "any_publication": {
+                                            "type": "string",
+                                            "example": "1967"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2023-10-18 14:19:40"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2023-10-18 14:19:40"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/books/{id}": {
+            "get": {
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Mostrar la información de un book",
+                "operationId": "2fdd668eb661591758aff4c56ca9b66a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 1
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "100 años de Soledad"
+                                        },
+                                        "author": {
+                                            "type": "string",
+                                            "example": "Gabriel García Márquez"
+                                        },
+                                        "gender": {
+                                            "type": "string",
+                                            "example": "Novela"
+                                        },
+                                        "any_publication": {
+                                            "type": "string",
+                                            "example": "1967"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2023-10-18 14:19:40"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2023-10-18 14:19:40"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "NOT FOUND",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No query results for model [App\\\\Models\\\\Book] #id"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Actualizar la información de un Book",
+                "operationId": "f5ca658c501a803d68655af0365e3802",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "": {
+                                        "properties": {
+                                            "title": {
+                                                "type": "string"
+                                            },
+                                            "author": {
+                                                "type": "string"
+                                            },
+                                            "gender": {
+                                                "type": "string"
+                                            },
+                                            "synopsis": {
+                                                "type": "string"
+                                            },
+                                            "any_publication": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "title": "100 años de Soledad",
+                                    "author": "Gabriel García Márquez",
+                                    "gender": "Novela",
+                                    "synopsis": "Cien años de soledad es una obra maestra de la literatura escrita por Gabriel García Márquez. La novela narra la historia de la familia Buendía a lo largo de varias generaciones en el pueblo ficticio de Macondo. Combina elementos de realismo mágico con una narrativa envolvente para explorar temas de amor, soledad, poder y destino. A lo largo de la historia, los personajes enfrentan desafíos extraordinarios en un mundo donde lo cotidiano y lo sobrenatural se entrelazan. La obra es un viaje a través del tiempo y la memoria de una familia, una comunidad y un continente, y es considerada una de las obras más influyentes de la literatura en español del siglo XX.",
+                                    "any_publication": "1967"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "number",
+                                            "example": 1
+                                        },
+                                        "title": {
+                                            "type": "string",
+                                            "example": "100 años de Soledad"
+                                        },
+                                        "author": {
+                                            "type": "string",
+                                            "example": "Gabriel García Márquez"
+                                        },
+                                        "gender": {
+                                            "type": "string",
+                                            "example": "Novela"
+                                        },
+                                        "any_publication": {
+                                            "type": "string",
+                                            "example": "1967"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2023-10-18 14:19:40"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2023-10-18 14:19:40"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Book"
+                ],
+                "summary": "Eliminar la información de un book",
+                "operationId": "1a9c26667c32b8ed5e5770d7a1cc9d5c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "NO CONTENT"
+                    },
+                    "404": {
+                        "description": "NOT FOUND",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "No se pudo realizar correctamente la eliminación"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

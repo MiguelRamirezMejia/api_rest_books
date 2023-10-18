@@ -1,0 +1,262 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API REST BOOKS</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+
+<div class="container mt-5">
+    <h2 class="text-center mb-4">API REST BOOKS</h2>
+
+    <!-- Botón CREAR -->
+    <div class="d-flex justify-content-between">
+        <button class="btn btn-primary mb-3" data-toggle="modal" data-target="#bookModal">Crear Libro</button>
+        <a href="http://localhost:8000/api/documentation" target="_blank" class="ml-auto">DOCUMENTACIÓN</a>
+    </div>
+    
+
+    <!-- Tabla de Books -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Género</th>
+                <th>Sinapsis</th>
+                <th>Año de Publicación</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="books">
+            <!-- Aquí se mostrarán los books -->
+        </tbody>
+    </table>
+
+    <!-- Modal para Crear/Editar Book -->
+    <div class="modal fade" id="bookModal" tabindex="-1" role="dialog" aria-labelledby="bookModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bookModalLabel">Libro</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="bookForm">
+                        <input type="hidden" id="bookId">
+                        <div class="form-group">
+                            <label for="title">Título:</label>
+                            <input type="text" class="form-control" id="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="author">Autor:</label>
+                            <input type="text" class="form-control" id="author" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="gender">Género:</label>
+                            <input type="text" class="form-control" id="gender" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="synopsis">Sinapsis:</label>
+                            <input type="text" class="form-control" id="synopsis" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="any_publication">Año Publicación:</label>
+                            <input type="number" class="form-control" id="any_publication" required>
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="guardarBook">Guardar</button>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+<!-- Modal para Ver Detalles de Book -->
+<div class="modal fade" id="detalleModal" tabindex="-1" role="dialog" aria-labelledby="detalleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="detalleModalLabel">Detalles del Libro</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Título:</strong> <span id="detalleTitulo"></span></p>
+                <p><strong>Autor:</strong> <span id="detalleAutor"></span></p>
+                <p><strong>Género:</strong> <span id="detalleGenero"></span></p>
+                <p><strong>Sinopsis:</strong> <span id="detalleSinopsis"></span></p>
+                <p><strong>Año de Publicación:</strong> <span id="detalleAnoPublicacion"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+    const url = 'http://localhost:8000/api/books/';
+    const bookForm = document.getElementById('bookForm');
+    const bookId = document.getElementById('bookId');
+    const title = document.getElementById('title');
+    const author = document.getElementById('author');
+    const gender = document.getElementById('gender');
+    const synopsis = document.getElementById('synopsis');
+    const any_publication = document.getElementById('any_publication');
+    const guardarBook = document.getElementById('guardarBook');
+
+    const cargarBooks = () => {
+        axios.get(url)
+            .then(response => {
+                const books = response.data;
+                const booksHtml = books.map(book => `
+                    <tr>
+                        <td>${book.id}</td>
+                        <td>${book.title}</td>
+                        <td>${book.author}</td>
+                        <td>${book.gender}</td>
+                        <td>${book.synopsis}</td>
+                        <td>${book.any_publication}</td>
+                        <td>
+                            <button class="btn btn-sm btn-warning" onclick="editarBook(${book.id}, '${book.title}', '${book.author}', '${book.gender}', '${book.synopsis}', ${book.any_publication})">Editar</button>
+
+                            <button class="btn btn-sm btn-info" onclick="verDetalles(${book.id})">Ver Detalles</button>
+                            <button class="btn btn-sm btn-danger" onclick="eliminarBook(${book.id})">Eliminar</button>
+                        </td>
+                    </tr>
+                `).join('');
+                document.getElementById('books').innerHTML = booksHtml;
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    };
+
+    const limpiarFormulario = () => {
+        bookId.value = '';
+        title.value = '';
+        author.value = '';
+        gender.value = '';
+        synopsis.value = '';
+        any_publication.value = '';
+    };
+
+    const editarBook = (id, titl, auth, gend, syno, any_) => {
+        bookId.value = id;
+        title.value = titl;
+        author.value = auth;
+        gender.value = gend;
+        synopsis.value = syno;
+        any_publication.value = any_;
+        $('#bookModal').modal('show');
+    };
+
+    const eliminarBook = (id) => {
+        if (confirm('¿Confirma eliminar el registro?')) {
+            axios.delete(url + id)
+                .then(response => {
+                    cargarBooks();
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    };
+
+    guardarBook.addEventListener('click', () => {
+        if (bookId.value === '') {
+            // Crear nuevo book
+            const nuevoBook = {
+                title: title.value,
+                author: author.value,
+                gender: gender.value,
+                synopsis: synopsis.value,
+                any_publication: parseInt(any_publication.value)
+            };
+            axios.post(url, nuevoBook)
+                .then(response => {
+                    cargarBooks();
+                    $('#bookModal').modal('hide');
+                    limpiarFormulario();
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        } else {
+            // Editar book existente
+            const bookEditado = {
+                id: parseInt(bookId.value),
+                title: title.value,
+                author: author.value,
+                gender: gender.value,
+                synopsis: synopsis.value,
+                any_publication: parseInt(any_publication.value)
+            };
+            axios.put(url + bookId.value, bookEditado)
+                .then(response => {
+                    cargarBooks();
+                    $('#bookModal').modal('hide');
+                    limpiarFormulario();
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    });
+
+    cargarBooks();
+
+
+
+    const verDetalles = (id) => {
+    // Realiza una solicitud GET a la API para obtener los detalles del libro por su ID
+    axios.get(url + id)
+        .then(response => {
+            const book = response.data;
+
+            // Actualiza el contenido del modal de detalles
+            document.getElementById('detalleTitulo').innerText = book.title;
+            document.getElementById('detalleAutor').innerText = book.author;
+            document.getElementById('detalleGenero').innerText = book.gender;
+            document.getElementById('detalleSinopsis').innerText = book.synopsis;
+            document.getElementById('detalleAnoPublicacion').innerText = book.any_publication;
+
+            // Muestra el modal de detalles
+            $('#detalleModal').modal('show');
+        })
+        .catch(error => {
+            console.error(error);
+        });
+};
+
+
+
+</script>
+
+</body>
+</html>
